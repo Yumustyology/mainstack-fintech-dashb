@@ -21,7 +21,7 @@ const NoResultsIcon = ({ size, color, className }: IconProps) => {
       style={style}
       className={className}
     >
-      <mask id="mask0_no_results" maskType="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+      <mask id="mask0_no_results" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
         <rect width="24" height="24" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_no_results)">
