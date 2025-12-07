@@ -3,8 +3,8 @@ import { vi, describe, it, beforeEach, expect } from 'vitest'
 import { exportTransactionsCsv } from '@/lib/exportCsv'
 
 const TXS = [
-  { payment_reference: 't1', date: '2025-12-01T12:00:00Z', type: 'typeA', status: 'ok', metadata: {} },
-  { payment_reference: 't2', date: '2025-11-01T12:00:00Z', type: 'typeB', status: 'ok', metadata: {} },
+  { payment_reference: 't1', date: '2025-12-01T12:00:00Z', type: 'typeA', status: 'ok', metadata: {}, amount: 100 },
+  { payment_reference: 't2', date: '2025-11-01T12:00:00Z', type: 'typeB', status: 'ok', metadata: {}, amount: 200 },
 ]
 
 describe('Transactions export', () => {
