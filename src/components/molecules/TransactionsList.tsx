@@ -11,9 +11,11 @@ import {
 import { getDateRangeFromPreset } from '@/lib/datePresets';
 import { exportTransactionsCsv } from '@/lib/exportCsv';
 import IconButton from "../atoms/buttons/IconButton";
-import TransactionItem from "./TransactionItem";
+import TransactionItem from "../atoms/TransactionItem";
 import { ExportIcon } from "../atoms/icons";
 import { useEntity } from "simpler-state";
+import NoResults from './NoResults'
+import { resetTransactionsFilter } from '@/lib/entities/transactions.entity'
 
 const fetcher = async (): Promise<Transaction[]> => {
   return getTransactions();
@@ -134,8 +136,30 @@ const TransactionsList: React.FC = () => {
         )}
 
         {!isLoading && (!items || items.length === 0) && (
-          <div className="text-sm text-ms-gray-400">No transactions</div>
+          (() => {
+            const hasFilter = Boolean(
+              filterState.preset ||
+              filterState.from ||
+              filterState.to ||
+              (filterState.type && filterState.type !== 'all') ||
+              (filterState.status && filterState.status !== 'all')
+            )
+
+            if (hasFilter) {
+              return (
+                <NoResults
+                  title="No matching transaction found for the selected filter"
+                  message="Change your filters to see more results, or add a new product."
+                  buttonLabel="Clear Filter"
+                  onClear={() => resetTransactionsFilter()}
+                />
+              )
+            }
+
+            return <div className="text-sm text-ms-gray-400">No transactions</div>
+          })()
         )}
+
       </div>
     </div>
   );

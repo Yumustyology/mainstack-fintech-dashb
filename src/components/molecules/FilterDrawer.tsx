@@ -75,6 +75,20 @@ const FilterDrawer: React.FC<Props> = ({ className }) => {
       selectedStatusValues.length > 0
   );
 
+  const filterCount = useMemo(() => {
+    let count = 0
+    if (from) count += 1
+    if (to) count += 1
+    if (activePreset) count += 1
+    // selectedValues / selectedStatusValues should count individually
+    count += selectedValues.length
+    count += selectedStatusValues.length
+    // Only count type/status if multiselects are not being used for them
+    if (selectedValues.length === 0 && type !== 'all') count += 1
+    if (selectedStatusValues.length === 0 && status !== 'all') count += 1
+    return count
+  }, [from, to, activePreset, selectedValues, selectedStatusValues, type, status])
+
   const handleDateChange = (value: string | null, isFrom: boolean) => {
     const newValue = value || "";
 
@@ -105,10 +119,17 @@ const FilterDrawer: React.FC<Props> = ({ className }) => {
     <Drawer side="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <IconButton
-          className="rounded-full bg-ms-gray-50 flex text-ms-black-300 text-base font-semibold hover:bg-ms-gray-50 shadow-none h-12 py-3 min-w-[107px] items-center gap-1"
+          className="rounded-full bg-ms-gray-50 flex text-ms-black-300 text-base font-semibold hover:bg-ms-gray-50 shadow-none h-12 py-3 min-w-[107px] items-center gap-1 relative"
           icon={<CaretDown />}
         >
-          Filter
+          <span className="flex items-center gap-2">
+            <span>Filter</span>
+            {filterCount > 0 && (
+              <span className="inline-flex items-center justify-center bg-ms-black-300 text-white text-xs font-semibold rounded-full h-5 min-w-[20px] px-1">
+                {filterCount}
+              </span>
+            )}
+          </span>
         </IconButton>
       </DrawerTrigger>
 
